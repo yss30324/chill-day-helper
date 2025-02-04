@@ -35,12 +35,33 @@
                 const rows = json.table.rows;
 
                 let table = document.getElementById("helperTable");
+                let today = new Date();
+                today.setHours(0, 0, 0, 0); // 只比較日期部分
+                let count = 0;
+
                 rows.forEach(row => {
-                    let rowElement = table.insertRow();
-                    let cell1 = rowElement.insertCell(0);
-                    let cell2 = rowElement.insertCell(1);
-                    cell1.textContent = row.c[0]?.v || "N/A";  // 日期
-                    cell2.textContent = row.c[1]?.v || "N/A";  // 小幫手
+                    let dateText = row.c[0]?.v || "N/A";
+                    let helper = row.c[1]?.v || "N/A";
+                    let rowDate;
+                    
+                    if (typeof dateText === "string" && dateText.startsWith("Date(")) {
+                        let dateParts = dateText.match(/\d+/g);
+                        if (dateParts) {
+                            rowDate = new Date(dateParts[0], dateParts[1] - 1, dateParts[2]);
+                        }
+                    } else {
+                        rowDate = new Date(dateText);
+                    }
+                    
+                    if (!isNaN(rowDate) && rowDate >= today && count < 12) {
+                        let formattedDate = (rowDate.getMonth() + 1).toString().padStart(2, '0') + "/" + rowDate.getDate().toString().padStart(2, '0');
+                        let rowElement = table.insertRow();
+                        let cell1 = rowElement.insertCell(0);
+                        let cell2 = rowElement.insertCell(1);
+                        cell1.textContent = formattedDate;
+                        cell2.textContent = helper;
+                        count++;
+                    }
                 });
             } catch (error) {
                 console.error("讀取 Google Sheets 失敗，請檢查權限與 ID/GID 是否正確", error);
