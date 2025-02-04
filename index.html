@@ -30,18 +30,17 @@
             try {
                 const response = await fetch(url);
                 let text = await response.text();
-                text = text.substring(47, text.length - 2);  // 移除 JSON 包裝的部分
+                text = text.substring(text.indexOf('{'), text.lastIndexOf('}') + 1); // 修正 JSON 格式解析
                 const json = JSON.parse(text);
                 const rows = json.table.rows;
 
                 let table = document.getElementById("helperTable");
-
                 rows.forEach(row => {
                     let rowElement = table.insertRow();
                     let cell1 = rowElement.insertCell(0);
                     let cell2 = rowElement.insertCell(1);
-                    cell1.textContent = row.c[0]?.v || "";  // 日期
-                    cell2.textContent = row.c[1]?.v || "";  // 小幫手
+                    cell1.textContent = row.c[0]?.v || "N/A";  // 日期
+                    cell2.textContent = row.c[1]?.v || "N/A";  // 小幫手
                 });
             } catch (error) {
                 console.error("讀取 Google Sheets 失敗", error);
