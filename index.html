@@ -30,7 +30,7 @@
             try {
                 const response = await fetch(url);
                 let text = await response.text();
-                text = text.substring(text.indexOf('{'), text.lastIndexOf('}') + 1); // 修正 JSON 格式解析
+                text = text.match(/\{.*\}/s)[0]; // 確保提取正確的 JSON 內容
                 const json = JSON.parse(text);
                 const rows = json.table.rows;
 
@@ -43,7 +43,7 @@
                     cell2.textContent = row.c[1]?.v || "N/A";  // 小幫手
                 });
             } catch (error) {
-                console.error("讀取 Google Sheets 失敗", error);
+                console.error("讀取 Google Sheets 失敗，請檢查權限與 ID/GID 是否正確", error);
             }
         }
 
