@@ -36,6 +36,7 @@
 
                 let table = document.getElementById("helperTable");
                 let today = new Date();
+                today.setHours(0, 0, 0, 0); // 確保只比較日期部分
                 let count = 0;
                 
                 rows.forEach(row => {
@@ -43,7 +44,17 @@
                     
                     let dateText = row.c[0]?.v || "未安排";
                     let helper = row.c[1]?.v || "未安排";
-                    let rowDate = new Date(dateText);
+                    let rowDate;
+                    
+                    if (typeof dateText === "string" && dateText.startsWith("Date(")) {
+                        // 處理 Google Sheets API 返回的 Date(YYYY,MM,DD) 格式
+                        let dateParts = dateText.match(/\d+/g);
+                        if (dateParts) {
+                            rowDate = new Date(dateParts[0], dateParts[1] - 1, dateParts[2]);
+                        }
+                    } else {
+                        rowDate = new Date(dateText);
+                    }
                     
                     if (!isNaN(rowDate) && rowDate >= today) {
                         let formattedDate = (rowDate.getMonth() + 1).toString().padStart(2, '0') + "/" + rowDate.getDate().toString().padStart(2, '0');
