@@ -47,14 +47,14 @@
                     if (typeof dateText === "string" && dateText.startsWith("Date(")) {
                         let dateParts = dateText.match(/\d+/g);
                         if (dateParts) {
-                            rowDate = new Date(dateParts[0], dateParts[1] - 1, dateParts[2]);
+                            rowDate = new Date(dateParts[0], dateParts[1] , dateParts[2]);
                         }
                     } else {
                         rowDate = new Date(dateText);
                     }
                     
                     if (!isNaN(rowDate) && rowDate >= today && count < 12) {
-                        let formattedDate = (rowDate.getMonth() + 2).toString().padStart(2, '0') + "/" + rowDate.getDate().toString().padStart(2, '0');
+                        let formattedDate = (rowDate.getMonth() + 1).toString().padStart(2, '0') + "/" + rowDate.getDate().toString().padStart(2, '0');
                         let rowElement = table.insertRow();
                         let cell1 = rowElement.insertCell(0);
                         let cell2 = rowElement.insertCell(1);
