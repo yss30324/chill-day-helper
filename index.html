@@ -23,8 +23,8 @@
 
     <script>
         async function fetchSheetData() {
-            const sheetID = "1VscfdBsf6JsFHEtBfAjSyxtYo_JpVzU4jQWydmvvpx8";  // 請替換成你的試算表 ID
-            const gid = "0";  // 請替換成你的 Chill day 分頁的 GID
+            const sheetID = "1VscfdBsf6JsFHEtBfAjSyxtYo_JpVzU4jQWydmvvpx8";
+            const gid = "0";
             const url = `https://docs.google.com/spreadsheets/d/${sheetID}/gviz/tq?tqx=out:json&gid=${gid}`;
 
             try {
@@ -53,7 +53,7 @@
                         rowDate = new Date(dateText);
                     }
                     
-                    if (!isNaN(rowDate) && rowDate >= today && count < 12) {
+                    if (true) {
                         let formattedDate = (rowDate.getMonth() + 1).toString().padStart(2, '0') + "/" + rowDate.getDate().toString().padStart(2, '0');
                         let rowElement = table.insertRow();
                         let cell1 = rowElement.insertCell(0);
