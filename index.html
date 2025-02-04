@@ -53,7 +53,7 @@
                         rowDate = new Date(dateText);
                     }
                     
-                    if (true) {
+                    if (!isNaN(rowDate) && rowDate >= today && count < 12) {
                         let formattedDate = (rowDate.getMonth() + 2).toString().padStart(2, '0') + "/" + rowDate.getDate().toString().padStart(2, '0');
                         let rowElement = table.insertRow();
                         let cell1 = rowElement.insertCell(0);
