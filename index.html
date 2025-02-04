@@ -35,16 +35,25 @@
                 const rows = json.table.rows;
 
                 let table = document.getElementById("helperTable");
+                let today = new Date();
+                let count = 0;
                 
                 rows.forEach(row => {
+                    if (count >= 12) return; // 限制最多顯示 12 項
+                    
                     let dateText = row.c[0]?.v || "未安排";
                     let helper = row.c[1]?.v || "未安排";
+                    let rowDate = new Date(dateText);
                     
-                    let rowElement = table.insertRow();
-                    let cell1 = rowElement.insertCell(0);
-                    let cell2 = rowElement.insertCell(1);
-                    cell1.textContent = dateText;
-                    cell2.textContent = helper;
+                    if (!isNaN(rowDate) && rowDate >= today) {
+                        let formattedDate = (rowDate.getMonth() + 1).toString().padStart(2, '0') + "/" + rowDate.getDate().toString().padStart(2, '0');
+                        let rowElement = table.insertRow();
+                        let cell1 = rowElement.insertCell(0);
+                        let cell2 = rowElement.insertCell(1);
+                        cell1.textContent = formattedDate;
+                        cell2.textContent = helper;
+                        count++;
+                    }
                 });
             } catch (error) {
                 console.error("讀取 Google Sheets 失敗，請檢查權限與 ID/GID 是否正確", error);
