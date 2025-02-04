@@ -47,7 +47,7 @@
                     if (typeof dateText === "string" && dateText.startsWith("Date(")) {
                         let dateParts = dateText.match(/\d+/g);
                         if (dateParts) {
-                            rowDate = new Date(dateParts[0], dateParts[1] - 1, dateParts[2]);
+                            rowDate = new Date(dateParts[0], dateParts[1] , dateParts[2]);
                         }
                     } else {
                         rowDate = new Date(dateText);
