@@ -1,0 +1,20 @@
+name: Auto Update HTML
+
+on:
+  push:
+    branches:
+      - main  # 監聽 main 分支的變更
+  workflow_dispatch:  # 允許手動執行
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      
+      - name: Deploy to GitHub Pages
+        uses: JamesIves/github-pages-deploy-action@4.1.9
+        with:
+          branch: gh-pages
+          folder: .
