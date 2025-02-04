@@ -35,12 +35,22 @@
                 const rows = json.table.rows;
 
                 let table = document.getElementById("helperTable");
+                let count = 0;
+                let today = new Date().toISOString().split('T')[0]; // 取得今天的日期
+                
                 rows.forEach(row => {
-                    let rowElement = table.insertRow();
-                    let cell1 = rowElement.insertCell(0);
-                    let cell2 = rowElement.insertCell(1);
-                    cell1.textContent = row.c[0]?.v || "N/A";  // 日期
-                    cell2.textContent = row.c[1]?.v || "N/A";  // 小幫手
+                    let dateText = row.c[0]?.v || "N/A";
+                    let helper = row.c[1]?.v || "N/A";
+                    let rowDate = new Date(dateText);
+
+                    if (rowDate >= new Date(today) && count < 12) { // 只顯示今天之後的 12 項
+                        let rowElement = table.insertRow();
+                        let cell1 = rowElement.insertCell(0);
+                        let cell2 = rowElement.insertCell(1);
+                        cell1.textContent = dateText;
+                        cell2.textContent = helper;
+                        count++;
+                    }
                 });
             } catch (error) {
                 console.error("讀取 Google Sheets 失敗，請檢查權限與 ID/GID 是否正確", error);
