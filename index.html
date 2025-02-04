@@ -36,18 +36,19 @@
 
                 let table = document.getElementById("helperTable");
                 let count = 0;
-                let today = new Date().toISOString().split('T')[0]; // 取得今天的日期
+                let today = new Date(); // 取得今天的日期
                 
                 rows.forEach(row => {
-                    let dateText = row.c[0]?.v || "N/A";
-                    let helper = row.c[1]?.v || "N/A";
+                    let dateText = row.c[0]?.v || "未安排";
+                    let helper = row.c[1]?.v || "未安排";
                     let rowDate = new Date(dateText);
-
-                    if (rowDate >= new Date(today) && count < 12) { // 只顯示今天之後的 12 項
+                    
+                    if (!isNaN(rowDate) && rowDate >= today && count < 12) { // 只顯示今天之後的 12 項
+                        let formattedDate = (rowDate.getMonth() + 1).toString().padStart(2, '0') + "/" + rowDate.getDate().toString().padStart(2, '0');
                         let rowElement = table.insertRow();
                         let cell1 = rowElement.insertCell(0);
                         let cell2 = rowElement.insertCell(1);
-                        cell1.textContent = dateText;
+                        cell1.textContent = formattedDate;
                         cell2.textContent = helper;
                         count++;
                     }
