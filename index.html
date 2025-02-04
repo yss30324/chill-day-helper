@@ -43,7 +43,7 @@
                     if (count >= 12) return; // 限制最多顯示 12 項
                     
                     let dateText = row.c[0]?.v || "未安排";
-                    let helper = row.c[1]?.v || "未安排"; // 直接使用與原本版本相同的小幫手解析方式
+                    let helper = (row.c.length > 1 && row.c[1]?.v) ? row.c[1].v : "未安排";
                     let rowDate;
                     
                     if (typeof dateText === "string" && dateText.startsWith("Date(")) {
