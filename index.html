@@ -23,8 +23,8 @@
 
     <script>
         async function fetchSheetData() {
-            const sheetID = "1VscfdBsf6JsFHEtBfAjSyxtYo_JpVzU4jQWydmvvpx8";
-            const gid = "0";
+            const sheetID = "1VscfdBsf6JsFHEtBfAjSyxtYo_JpVzU4jQWydmvvpx8";  // 請替換成你的試算表 ID
+            const gid = "0";  // 請替換成你的 Chill day 分頁的 GID
             const url = `https://docs.google.com/spreadsheets/d/${sheetID}/gviz/tq?tqx=out:json&gid=${gid}`;
 
             try {
@@ -35,34 +35,12 @@
                 const rows = json.table.rows;
 
                 let table = document.getElementById("helperTable");
-                let today = new Date();
-                today.setHours(0, 0, 0, 0); // 確保只比較日期部分
-                let count = 0;
-                
                 rows.forEach(row => {
-                    let dateText = row.c[0]?.v || "未安排";
-                    let helper = row.c[1]?.v || "N/A"; // 直接當作文字輸出
-                    let rowDate;
-                    
-                    if (typeof dateText === "string" && dateText.startsWith("Date(")) {
-                        // 處理 Google Sheets API 返回的 Date(YYYY,MM,DD) 格式
-                        let dateParts = dateText.match(/\d+/g);
-                        if (dateParts) {
-                            rowDate = new Date(dateParts[0], dateParts[1] - 1, dateParts[2]);
-                        }
-                    } else {
-                        rowDate = new Date(dateText);
-                    }
-                    
-                    if (!isNaN(rowDate) && rowDate >= today && count < 12) {
-                        let formattedDate = (rowDate.getMonth() + 1).toString().padStart(2, '0') + "/" + rowDate.getDate().toString().padStart(2, '0');
-                        let rowElement = table.insertRow();
-                        let cell1 = rowElement.insertCell(0);
-                        let cell2 = rowElement.insertCell(1);
-                        cell1.textContent = formattedDate;
-                        cell2.textContent = helper;
-                        count++;
-                    }
+                    let rowElement = table.insertRow();
+                    let cell1 = rowElement.insertCell(0);
+                    let cell2 = rowElement.insertCell(1);
+                    cell1.textContent = row.c[0]?.v || "N/A";  // 日期
+                    cell2.textContent = row.c[1]?.v || "N/A";  // 小幫手
                 });
             } catch (error) {
                 console.error("讀取 Google Sheets 失敗，請檢查權限與 ID/GID 是否正確", error);
