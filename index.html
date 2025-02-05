@@ -41,7 +41,7 @@
 
                 rows.forEach(row => {
                     let dateText = row.c[0]?.v || "N/A";
-                    let helper = row.c[1]?.v || "N/A";
+                    let helper = row.c[1]?.v || "尚未安排";
                     let rowDate;
                     
                     if (typeof dateText === "string" && dateText.startsWith("Date(")) {
@@ -53,7 +53,7 @@
                         rowDate = new Date(dateText);
                     }
                     
-                    if (!isNaN(rowDate) && rowDate >= today && count < 12) {
+                    if (!isNaN(rowDate) && rowDate >= today && count < 20) {
                         let weekdays = ['日', '一', '二', '三', '四', '五', '六'];
                         let formattedDate = (rowDate.getMonth() + 1).toString().padStart(2, '0') + "/" + rowDate.getDate().toString().padStart(2, '0') + "(" + weekdays[rowDate.getDay()] + ")";
                         let rowElement = table.insertRow();
